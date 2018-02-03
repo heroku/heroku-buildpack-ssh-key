@@ -38,8 +38,8 @@ cat "$ENV_DIR/GIT_SSH_KEY" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
 # end SectorLabs/heroku-buildpack-git-submodule
 
-# VENDOR_NAME=$(basename $GIT_REPO_URL | sed 's@\.git@@g')
-# INSTALL_DIR="$VENDOR_DIR/$VENDOR_NAME"
-# mkdir -p $INSTALL_DIR
+VENDOR_NAME=$(basename $GIT_REPO_URL | sed 's@\.git@@g')
+INSTALL_DIR="$VENDOR_DIR/$VENDOR_NAME"
+mkdir -p $INSTALL_DIR
 
 git clone $GIT_REPO_URL $INSTALL_DIR 2>&1 | indent
