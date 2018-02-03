@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "heroku-buildpack-private-vendor"
+exit 0

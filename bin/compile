@@ -1,0 +1,45 @@
+#!/bin/bash
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+echo "-----> Install heroku-buildpack-private-vendor"
+
+BUILD_DIR=$1
+VENDOR_DIR="$BUILD_DIR/vendor"
+ENV_DIR=$3
+
+# start SectorLabs/heroku-buildpack-git-submodule
+GIT_REPO_URL=$(<"$ENV_DIR/GIT_REPO_URL")
+GIT_SSH_KEY=$(<"$ENV_DIR/GIT_SSH_KEY")
+
+if [[ -z $GIT_REPO_URL ]]; then
+    echo "Did you forget to set GIT_REPO_URL?" | indent
+    exit 1
+fi
+
+if [[ -z $GIT_SSH_KEY ]]; then
+    echo "Did you forget to set GIT_SSH_KEY?" | indent
+    exit 1
+fi
+
+# ignore/hide ssh warnings
+echo "Host *" >> ~/.ssh/config
+echo "   StrictHostKeyChecking no" >> ~/.ssh/config
+echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
+echo "   LogLevel ERROR" >> ~/.ssh/config
+echo "-----> Installed SSH key from GIT_SSH_KEY"
+
+# install the ssh key
+mkdir -p ~/.ssh
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts 2> /dev/null
+cat "$ENV_DIR/GIT_SSH_KEY" > ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa
+# end SectorLabs/heroku-buildpack-git-submodule
+
+# VENDOR_NAME=$(basename $GIT_REPO_URL | sed 's@\.git@@g')
+# INSTALL_DIR="$VENDOR_DIR/$VENDOR_NAME"
+# mkdir -p $INSTALL_DIR
+
+git clone $GIT_REPO_URL $INSTALL_DIR 2>&1 | indent
