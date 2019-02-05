@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "heroku-buildpack-private-git-repo"
+echo "heroku-buildpack-ssh-key"
 exit 0

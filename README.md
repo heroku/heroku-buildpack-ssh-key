@@ -1,7 +1,7 @@
-heroku-buildpack-private-git-repo
+heroku-buildpack-ssh-key
 ====
 
-Add a private git repo to your build via config var git url and ssh key.
+Add an ssh key to your build.
 
 Adapted from [SectorLabs/heroku-buildpack-git-submodule](https://github.com/SectorLabs/heroku-buildpack-git-submodule).
 
@@ -10,21 +10,16 @@ Adapted from [SectorLabs/heroku-buildpack-git-submodule](https://github.com/Sect
 1. Add the buildpack to your Heroku app:
 
     ```
-    $ heroku buildpacks:add https://github.com/RasPhilCo/heroku-buildpack-private-git-repo.git -i 1
+    $ heroku buildpacks:add https://github.com/RasPhilCo/heroku-buildpack-ssh-key.git -i 1
     ```
 
     Keep in mind that the buildpack order is important. If you'll specify this buildpack after your default one (e.g. `heroku/nodejs`) it'll not work. See [https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app) for details.
 
-2. Set the `GIT_REPO_URL` to the SSH URL of your Git repo:
+2. Set `BUILDPACK_SSH_KEY` to the private SSH key that can access both your repo and its submodules:
 
     ```
-    $ heroku config:set GIT_REPO_URL=git@github.com:SectorLabs/myrepo
+    $ heroku config:set BUILDPACK_SSH_KEY=$(cat ~/.ssh/id_rsa)
     ```
 
-3. Set `GIT_SSH_KEY` to the private SSH key that can access both your repo and its submodules:
+The buildpack will add the SSH key to your build.
 
-    ```
-    $ heroku config:set GIT_SSH_KEY=$(cat ~/.ssh/id_rsa)
-    ```
-
-The buildpack will clone the private repo into the `vendor` directory.
