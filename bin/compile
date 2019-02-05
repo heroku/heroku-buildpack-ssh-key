@@ -4,7 +4,7 @@ indent() {
   sed -u 's/^/       /'
 }
 
-echo "-----> Install heroku-buildpack-private-vendor"
+echo "-----> Install heroku-buildpack-private-git-repo"
 
 BUILD_DIR=$1
 VENDOR_DIR="$BUILD_DIR/vendor"

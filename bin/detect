@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "heroku-buildpack-private-vendor"
+echo "heroku-buildpack-private-git-repo"
 exit 0

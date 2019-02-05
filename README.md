@@ -1,7 +1,7 @@
-heroku-buildpack-private-vendor
+heroku-buildpack-private-git-repo
 ====
 
-Add a private vendor to your build via config var git url and ssh key.
+Add a private git repo to your build via config var git url and ssh key.
 
 Adapted from [SectorLabs/heroku-buildpack-git-submodule](https://github.com/SectorLabs/heroku-buildpack-git-submodule).
 
@@ -10,7 +10,7 @@ Adapted from [SectorLabs/heroku-buildpack-git-submodule](https://github.com/Sect
 1. Add the buildpack to your Heroku app:
 
     ```
-    $ heroku buildpacks:add https://github.com/RasPhilCo/heroku-buildpack-private-vendor.git -i 1
+    $ heroku buildpacks:add https://github.com/RasPhilCo/heroku-buildpack-private-git-repo.git -i 1
     ```
 
     Keep in mind that the buildpack order is important. If you'll specify this buildpack after your default one (e.g. `heroku/nodejs`) it'll not work. See [https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app) for details.
@@ -26,3 +26,5 @@ Adapted from [SectorLabs/heroku-buildpack-git-submodule](https://github.com/Sect
     ```
     $ heroku config:set GIT_SSH_KEY=$(cat ~/.ssh/id_rsa)
     ```
+
+The buildpack will clone the private repo into the `vendor` directory.
