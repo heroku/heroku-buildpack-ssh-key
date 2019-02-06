@@ -15,11 +15,11 @@ Adapted from [SectorLabs/heroku-buildpack-git-submodule](https://github.com/Sect
 
     Keep in mind that the buildpack order is important. If you'll specify this buildpack after your default one (e.g. `heroku/nodejs`) it'll not work. See [https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app) for details.
 
-2. Set `BUILDPACK_SSH_KEY` to the private SSH key that can access both your repo and its submodules:
+2. Set `BUILDPACK_SSH_KEY` to the private SSH key you want added:
 
     ```
     $ heroku config:set BUILDPACK_SSH_KEY=$(cat ~/.ssh/id_rsa)
     ```
 
-The buildpack will add the SSH key to your build.
+The buildpack will save the SSH key to your build at `~/.ssh/id_rsa`.
 
