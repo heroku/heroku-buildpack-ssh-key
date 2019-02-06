@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 indent() {
   sed -u 's/^/       /'
 }
@@ -18,6 +20,9 @@ if [[ -z $BUILDPACK_SSH_KEY ]]; then
     exit 1
 fi
 
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
 # ignore/hide ssh warnings
 echo "Host *" >> ~/.ssh/config
 echo "   StrictHostKeyChecking no" >> ~/.ssh/config
@@ -26,7 +31,7 @@ echo "   LogLevel ERROR" >> ~/.ssh/config
 echo "-----> Installed SSH key from BUILDPACK_SSH_KEY"
 
 # install the ssh key
-mkdir -p ~/.ssh
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts 2> /dev/null
 cat "$ENV_DIR/BUILDPACK_SSH_KEY" > ~/.ssh/id_rsa
+echo >> ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
