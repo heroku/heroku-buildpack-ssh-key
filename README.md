@@ -10,7 +10,7 @@ Adapted from [SectorLabs/heroku-buildpack-git-submodule](https://github.com/Sect
 1. Add the buildpack to your Heroku app:
 
     ```
-    $ heroku buildpacks:add https://github.com/RasPhilCo/heroku-buildpack-ssh-key.git -i 1
+    $ heroku buildpacks:add https://github.com/heroku/heroku-buildpack-ssh-key.git -i 1
     ```
 
     Keep in mind that the buildpack order is important. If you'll specify this buildpack after your default one (e.g. `heroku/nodejs`) it'll not work. See [https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app) for details.
