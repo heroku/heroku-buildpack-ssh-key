@@ -20,18 +20,34 @@ if [[ -z $BUILDPACK_SSH_KEY ]]; then
     exit 1
 fi
 
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
+function install_ssh_key() {
+  local SSH_DIR=$1
 
-# ignore/hide ssh warnings
-echo "Host *" >> ~/.ssh/config
-echo "   StrictHostKeyChecking no" >> ~/.ssh/config
-echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
-echo "   LogLevel ERROR" >> ~/.ssh/config
-echo "-----> Installed SSH key from BUILDPACK_SSH_KEY"
+  mkdir -p ${SSH_DIR}
+  chmod 700 ${SSH_DIR}
 
-# install the ssh key
-ssh-keyscan -H github.com >> ~/.ssh/known_hosts 2> /dev/null
-cat "$ENV_DIR/BUILDPACK_SSH_KEY" > ~/.ssh/id_rsa
-echo >> ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa
+  # ignore/hide ssh warnings
+  echo "Host *" >> ${SSH_DIR}/config
+  echo "   StrictHostKeyChecking no" >> ${SSH_DIR}/config
+  echo "   UserKnownHostsFile /dev/null" >> ${SSH_DIR}/config
+  echo "   LogLevel ERROR" >> ${SSH_DIR}/config
+  echo "-----> Installed SSH key from BUILDPACK_SSH_KEY"
+
+  # install the ssh key
+  ssh-keyscan -H github.com >> ${SSH_DIR}/known_hosts 2> /dev/null
+  cat "$ENV_DIR/BUILDPACK_SSH_KEY" > ${SSH_DIR}/id_rsa
+  echo >> ${SSH_DIR}/id_rsa
+  chmod 600 ${SSH_DIR}/id_rsa
+}
+
+# expose the BUILDPACK_SSH_KEY information for other buildpacks at compile-time
+install_ssh_key ~/.ssh
+
+# if we're in the new build system (heroku labs:enable build-in-app-dir),
+# the value of $HOME won't be /app (it will be a random /tmp directory).
+# This means we'll need to run the compile steps again
+# and place SSH information in the BUILD_DIR directory, so that it becomes
+# available at **runtime** in the new build system when $HOME is /app again.
+if [ ${BUILD_DIR} != ${HOME} ]; then
+  install_ssh_key ${BUILD_DIR}/.ssh
+fi
