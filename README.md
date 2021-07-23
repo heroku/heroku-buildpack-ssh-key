@@ -18,7 +18,7 @@ Adapted from [SectorLabs/heroku-buildpack-git-submodule](https://github.com/Sect
 2. Set `BUILDPACK_SSH_KEY` to the private SSH key you want added:
 
     ```
-    $ heroku config:set BUILDPACK_SSH_KEY=$(cat ~/.ssh/id_rsa)
+    $ heroku config:set BUILDPACK_SSH_KEY="$(cat ~/.ssh/id_rsa)"
     ```
 
 The buildpack will save the SSH key to your build at `~/.ssh/id_rsa`.
