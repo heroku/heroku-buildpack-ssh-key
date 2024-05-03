@@ -10,6 +10,7 @@ echo "-----> Install heroku-buildpack-ssh-key"
 
 BUILD_DIR=$1
 VENDOR_DIR="$BUILD_DIR/vendor"
+SSH_DIR="$BUILD_DIR/.ssh"
 ENV_DIR=$3
 
 # adapted from SectorLabs/heroku-buildpack-git-submodule
@@ -20,18 +21,18 @@ if [[ -z $BUILDPACK_SSH_KEY ]]; then
     exit 1
 fi
 
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
+mkdir -p $SSH_DIR
+chmod 700 $SSH_DIR
 
 # ignore/hide ssh warnings
-echo "Host *" >> ~/.ssh/config
-echo "   StrictHostKeyChecking no" >> ~/.ssh/config
-echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
-echo "   LogLevel ERROR" >> ~/.ssh/config
+echo "Host *" >> "$SSH_DIR/config"
+echo "   StrictHostKeyChecking no" >> "$SSH_DIR/config"
+echo "   UserKnownHostsFile /dev/null" >> "$SSH_DIR/config"
+echo "   LogLevel ERROR" >> "$SSH_DIR/config"
 echo "-----> Installed SSH key from BUILDPACK_SSH_KEY"
 
 # install the ssh key
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts 2> /dev/null
-cat "$ENV_DIR/BUILDPACK_SSH_KEY" > ~/.ssh/id_rsa
-echo >> ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa
+cat "$ENV_DIR/BUILDPACK_SSH_KEY" > "$SSH_DIR/id_rsa"
+echo >> "$SSH_DIR/id_rsa"
+chmod 600 "$SSH_DIR/id_rsa"
