@@ -32,7 +32,7 @@ echo "   LogLevel ERROR" >> "$SSH_DIR/config"
 echo "-----> Installed SSH key from BUILDPACK_SSH_KEY"
 
 # install the ssh key
-ssh-keyscan -H github.com >> ~/.ssh/known_hosts 2> /dev/null
+ssh-keyscan -H github.com >> "$SSH_DIR/known_hosts" 2> /dev/null
 cat "$ENV_DIR/BUILDPACK_SSH_KEY" > "$SSH_DIR/id_rsa"
 echo >> "$SSH_DIR/id_rsa"
 chmod 600 "$SSH_DIR/id_rsa"
